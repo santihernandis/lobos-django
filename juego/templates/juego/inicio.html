@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Lobos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(233, 69, 96, 0.2);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b7a 0%, #e94560 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #c0c0ff;
+            font-size: 0.9em;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+        }
+        
+        .message-box {
+            background-color: rgba(48, 120, 180, 0.15);
+            color: #64b5f6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #64b5f6;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .error-box {
+            background-color: rgba(255, 68, 68, 0.15);
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ff6b6b;
+            font-size: 0.95em;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        input[type="text"] {
+            padding: 14px 16px;
+            border: 2px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #e94560;
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+        }
+        
+        button {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #ff6b7a 0%, #e94560 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐺 LOBOS</h1>
+        <p class="subtitle">EL JUEGO DE LA ALDEA</p>
+        
+        {% if message %}
+        <div class="message-box">{{ message }}</div>
+        {% endif %}
+        
+        {% if error %}
+        <div class="error-box">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="nombre" placeholder="Tu apodo" required autofocus maxlength="30">
+            <button type="submit">Comenzar</button>
+        </form>
+    </div>
+</body>
+</html>

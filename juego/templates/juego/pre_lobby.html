@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Lobby - Los Lobos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(233, 69, 96, 0.2);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #ff6b7a 0%, #e94560 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .greeting {
+            text-align: center;
+            color: #c0c0ff;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+        
+        .error {
+            background-color: rgba(255, 68, 68, 0.15);
+            color: #ff6b6b;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ff6b6b;
+            font-size: 0.9em;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(233, 69, 96, 0.2);
+            border-radius: 15px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background: rgba(233, 69, 96, 0.08);
+            border-color: rgba(233, 69, 96, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .option h3 {
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .option p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #e94560;
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #ff6b7a 0%, #e94560 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .divider {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            margin: 20px 0;
+            font-size: 0.9em;
+            letter-spacing: 2px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .greeting {
+                font-size: 0.9em;
+                margin-bottom: 25px;
+            }
+            
+            .option {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐺 LOBOS</h1>
+        <p class="greeting">¡Hola, <strong>{{ nombre }}</strong>!</p>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <div class="options">
+            <div class="option">
+                <h3>🎲 Crear Sala</h3>
+                <p>Sé el líder de una nueva partida</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="crear">
+                    <button type="submit">Crear</button>
+                </form>
+            </div>
+            
+            <div class="divider">O</div>
+            
+            <div class="option">
+                <h3>Unirse a Sala</h3>
+                <p>Ingresa el código de 6 caracteres</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="unirse">
+                    <input 
+                        type="text" 
+                        name="codigo" 
+                        placeholder="ABC123"
+                        maxlength="6"
+                        pattern="[A-Za-z0-9]{6}"
+                        required 
+                        autofocus
+                    >
+                    <button type="submit">Unirse</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
