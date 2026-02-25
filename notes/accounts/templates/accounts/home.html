@@ -1,0 +1,37 @@
+<!-- templates/home.html -->
+{% extends "accounts/base.html" %}
+{% block title %}Home · Mi App{% endblock %}
+
+{% block content %}
+  <section class="space-y-6">
+    <div class="glass rounded-xxl p-6 shadow-ios">
+      <h1 class="text-2xl font-semibold tracking-tight mb-3">Bienvenido 👋</h1>
+      <p class="opacity-80 mb-4">Esta es tu consola. Escribe algo y probamos el POST con CSRF correcto.</p>
+
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+          <label for="mensaje" class="block text-sm mb-1 opacity-80">Mensaje</label>
+          <input id="mensaje" name="mensaje" type="text"
+                 class="w-full rounded-2xl border border-black/10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-black/20"
+                 placeholder="Tu mensaje aquí" />
+        </div>
+        <button type="submit"
+                class="px-4 py-2.5 rounded-full bg-black text-white text-sm font-medium hover:opacity-90 transition">
+          Enviar
+        </button>
+      </form>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <a href="{% url 'login' %}" class="glass rounded-xxl p-5 shadow-ios hover:shadow-lg hover:-translate-y-0.5 transition transform">
+        <h2 class="font-semibold mb-1">Iniciar sesión</h2>
+        <p class="text-sm opacity-80">Accede con tu email y contraseña.</p>
+      </a>
+      <a href="{% url 'register' %}" class="glass rounded-xxl p-5 shadow-ios hover:shadow-lg hover:-translate-y-0.5 transition transform">
+        <h2 class="font-semibold mb-1">Crear cuenta</h2>
+        <p class="text-sm opacity-80">Regístrate para empezar.</p>
+      </a>
+    </div>
+  </section>
+{% endblock %}

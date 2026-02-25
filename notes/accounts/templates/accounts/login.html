@@ -1,0 +1,28 @@
+<!-- templates/accounts/login.html -->
+{% extends "accounts/base.html" %}
+{% block title %}Entrar · Mi App{% endblock %}
+{% block content %}
+  <section class="max-w-md mx-auto glass rounded-xxl p-6 shadow-ios">
+    <h1 class="text-xl font-semibold mb-4">Iniciar sesión</h1>
+
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div>
+        <label for="{{ form.email.id_for_label }}" class="block text-sm mb-1 opacity-80">{{ form.email.label }}</label>
+        {{ form.email }} {{ form.email.errors }}
+      </div>
+      <div>
+        <label for="{{ form.password.id_for_label }}" class="block text-sm mb-1 opacity-80">{{ form.password.label }}</label>
+        {{ form.password }} {{ form.password.errors }}
+      </div>
+      <button class="w-full px-4 py-2.5 rounded-full bg-black text-white text-sm font-medium hover:opacity-90 transition">
+        Entrar
+      </button>
+    </form>
+
+    <p class="text-sm opacity-80 mt-4">
+      <a href="{% url 'password_reset' %}" class="underline underline-offset-4">¿Olvidaste la contraseña?</a>
+    </p>
+  </section>
+{% endblock %}

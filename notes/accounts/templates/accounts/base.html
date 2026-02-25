@@ -1,0 +1,127 @@
+<!-- templates/base.html -->
+{% load static %}
+<!doctype html>
+<html lang="es" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}Mi App{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    <style>
+      /* Estilo base para inputs, selects y textareas (Apple-like) */
+      input[type="text"], input[type="email"], input[type="password"],
+      input[type="search"], input[type="url"], input[type="number"],
+      textarea, select {
+        appearance: none; -webkit-appearance: none; -moz-appearance: none;
+        border-radius: 1rem;                 /* esquinas redondeadas */
+        border: 1px solid rgba(0,0,0,.12);   /* borde sutil */
+        padding: .625rem 1rem;               /* 10px 16px aprox */
+        background: rgba(255,255,255,.9);    /* fondo claro sobre glass */
+        outline: none; transition: box-shadow .2s, border-color .2s;
+        width: 100%;
+      }
+      input:focus, textarea:focus, select:focus {
+        box-shadow: 0 0 0 4px rgba(0,0,0,.12); /* anillo de foco suave */
+        border-color: rgba(0,0,0,.38);
+      }
+      /* Arreglo autofill Safari/Chrome (quita “pintura” amarilla/azul) */
+      input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 30px rgba(255,255,255,.9) inset !important;
+                box-shadow: 0 0 0 30px rgba(255,255,255,.9) inset !important;
+        -webkit-text-fill-color: inherit !important;
+        border-radius: 1rem !important;
+      }
+    </style>
+    <!-- Tailwind CDN (rápido para dev) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Extiende un poco la paleta y activa dark mode por clase
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              iosBg: '#0b0b0c',         // fondo dark
+              iosCard: 'rgba(255,255,255,0.6)',  // glass claro
+              iosBorder: 'rgba(255,255,255,0.35)',
+            },
+            boxShadow: {
+              'ios': '0 1px 2px rgba(0,0,0,0.08), 0 10px 30px rgba(0,0,0,0.12)'
+            },
+            borderRadius: { 'xxl': '1.5rem' }
+          }
+        }
+      }
+    </script>
+
+    <!-- Tipografía: stack con San Francisco en Apple -->
+    <style>
+      :root {
+        --bg: #f5f5f7;         /* gris suave estilo Apple light */
+        --text: #0b0b0c;
+      }
+      html, body { height: 100%; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+                     "SF Pro Text", "SF Pro Display", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .glass {
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: saturate(180%) blur(18px);
+        -webkit-backdrop-filter: saturate(180%) blur(18px);
+        border: 1px solid rgba(255,255,255,0.35);
+      }
+      .dark body { background: #0b0b0c; color: #ececec; }
+    </style>
+  </head>
+
+  <body class="min-h-full">
+    <!-- Barra superior translúcida -->
+    <header class="sticky top-0 z-50">
+      <nav class="glass flex items-center justify-between px-4 md:px-6 py-3">
+        <a href="{% url 'home' %}" class="font-semibold tracking-tight">🍏 Mi App</a>
+        <div class="flex items-center gap-3">
+          {% if user.is_authenticated %}
+            <span class="text-sm opacity-80 hidden sm:inline">Hola, {{ user.email }}</span>
+            <a href="{% url 'logout' %}" class="px-3 py-1.5 rounded-full bg-black text-white text-sm hover:opacity-90 transition">
+              Salir
+            </a>
+          {% else %}
+            <a href="{% url 'login' %}" class="px-3 py-1.5 rounded-full bg-black text-white text-sm hover:opacity-90 transition">
+              Entrar
+            </a>
+            <a href="{% url 'register' %}" class="px-3 py-1.5 rounded-full border border-black/10 text-sm hover:bg-black hover:text-white transition">
+              Registrarse
+            </a>
+          {% endif %}
+          
+        </div>
+      </nav>
+    </header>
+
+    <!-- Contenedor principal -->
+    <main class="max-w-4xl mx-auto px-4 md:px-6 pt-8 pb-16">
+      {% if messages %}
+        <div class="mb-4 space-y-2">
+          {% for m in messages %}
+            <div class="glass rounded-xxl px-4 py-2 text-sm shadow-ios">
+              {{ m }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Toggle dark-mode (añade/quita .dark en <html>) -->
+    <script>
+      const btn = document.getElementById('themeToggle');
+      btn?.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+      });
+    </script>
+  </body>
+</html>
