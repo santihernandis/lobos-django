@@ -152,10 +152,10 @@
             font-family: 'Courier New', monospace;
         }
         
-        .btn-copy {
+        .btn-whatsapp {
             padding: 10px 14px;
-            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
-            color: #1a1a2e;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -165,9 +165,9 @@
             transition: all 0.3s ease;
         }
         
-        .btn-copy:hover {
+        .btn-whatsapp:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(100, 181, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
         }
         
         /* Config section */
@@ -351,7 +351,7 @@
             <h4>🔗 COMPARTIR</h4>
             <div class="share-container">
                 <input type="text" class="share-input" id="url-compartir" value="{{ url_compartir }}" readonly>
-                <button class="btn-copy" onclick="copiarEnlace()">📋</button>
+                <button class="btn-whatsapp" onclick="compartirWhatsApp()">💬 WhatsApp</button>
             </div>
         </div>
         {% endif %}
@@ -664,20 +664,13 @@
             return cookieValue;
         }
 
-        function copiarEnlace() {
+        function compartirWhatsApp() {
             const input = document.getElementById('url-compartir');
-            const btn = document.querySelector('.btn-copy');
+            const url = input.value;
+            const mensaje = encodeURIComponent('¡Únete a mi sala de Lobos! ' + url);
+            const whatsappUrl = `https://wa.me/?text=${mensaje}`;
             
-            navigator.clipboard.writeText(input.value)
-                .then(() => {
-                    const textoOriginal = btn.textContent;
-                    btn.textContent = '✅';
-                    
-                    setTimeout(() => {
-                        btn.textContent = textoOriginal;
-                    }, 2000);
-                })
-                .catch(err => console.error('Error:', err));
+            window.open(whatsappUrl, '_blank');
         }
 
         conectarWebSocket();
